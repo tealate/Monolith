@@ -6,5 +6,7 @@ $scoreboard players set @s ml_a_duration $(duration)
 scoreboard players set @s ml_a_elapsed 0
 $function monolith:animation/easing/resolve/$(easing)
 $function monolith:animation/adapter/resolve/$(property)
+scoreboard players operation @s ml_a_value = @s ml_a_from
+function monolith:animation/adapter/dispatch
 execute if score @s ml_a_duration matches ..0 run function monolith:animation/finish
 execute if score @s ml_a_duration matches 1.. run tag @s add monolith.animating
