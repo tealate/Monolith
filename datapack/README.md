@@ -1,5 +1,15 @@
 # Monolith Datapack
 
+## クリスタル登場デモ
+
+`/reload`後に`/function monolith:animation/debug/showcase`を実行。
+前方6ブロックにアメジスト・シーランタン・金のDisplayが時間差で出現し、
+拡大 → 上昇 → 540度回転 → バウンド着地 → 縮小消滅を約8秒で再生する。
+既存のout_back / out_quart / out_bounce / in_quartを使用する。
+音とParticle付き。再実行でこのデモを作り直し、終了時は自動削除する。
+途中停止は`/function monolith:animation/debug/reset`（他の比較サンプルも削除）。
+ゲーム内の見え方は未確認。
+
 Minecraft Java Edition 26.1向けのデータパックです。リソースパック本体とは分離し、ワールドの`datapacks/Monolith`からこのフォルダへシンボリックリンクして使用します。
 
 再読み込みは`/reload`、リソースパックの再読み込みは`F3 + T`です。

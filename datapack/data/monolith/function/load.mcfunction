@@ -1,4 +1,5 @@
 # Monolith datapack initialization.
+scoreboard objectives add ml_demo_time dummy
 scoreboard objectives add ml_a_elapsed dummy
 scoreboard objectives add ml_a_duration dummy
 scoreboard objectives add ml_a_easing dummy
