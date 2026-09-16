@@ -1,0 +1,30 @@
+# Vanilla Minecraft reference files
+
+vanilla_reference/
+
+# OS-generated files
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE files
+
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Temporary / backup files
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Logs
+
+*.log
