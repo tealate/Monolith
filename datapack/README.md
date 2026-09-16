@@ -15,3 +15,5 @@ Minecraft Java Edition 26.1向けのデータパックです。リソースパ�
 ```
 
 `translation`は5個のブロックを同じ距離だけ上昇させ、`scale`は5個のブロックを同じ倍率まで拡大します。左から`linear`、`in_quad`、`out_quad`、`in_out_quad`、`out_back`です。
+
+利用可能なEasingは`linear`、`in_quad`、`out_quad`、`in_out_quad`、`in_cubic`、`out_cubic`、`in_out_cubic`、`in_back`、`out_back`、`in_out_back`、`out_bounce`、`in_bounce`、`in_out_bounce`です。

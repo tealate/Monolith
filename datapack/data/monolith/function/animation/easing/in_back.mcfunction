@@ -1,0 +1,8 @@
+scoreboard players operation @s ml_a_tmp1 = @s ml_a_tmp0
+scoreboard players operation @s ml_a_tmp1 *= @s ml_a_tmp0
+scoreboard players operation @s ml_a_tmp1 /= #scale ml_a_tmp0
+scoreboard players operation @s ml_a_tmp0 *= #back_c3 ml_a_tmp0
+scoreboard players operation @s ml_a_tmp0 /= #scale ml_a_tmp0
+scoreboard players operation @s ml_a_tmp0 -= #back_c1 ml_a_tmp0
+scoreboard players operation @s ml_a_tmp1 *= @s ml_a_tmp0
+scoreboard players operation @s ml_a_tmp1 /= #scale ml_a_tmp0

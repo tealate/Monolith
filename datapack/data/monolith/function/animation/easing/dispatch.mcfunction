@@ -3,3 +3,11 @@ execute if score @s ml_a_easing matches 1 run function monolith:animation/easing
 execute if score @s ml_a_easing matches 2 run function monolith:animation/easing/out_quad
 execute if score @s ml_a_easing matches 3 run function monolith:animation/easing/in_out_quad
 execute if score @s ml_a_easing matches 4 run function monolith:animation/easing/out_back
+execute if score @s ml_a_easing matches 5 run function monolith:animation/easing/in_cubic
+execute if score @s ml_a_easing matches 6 run function monolith:animation/easing/out_cubic
+execute if score @s ml_a_easing matches 7 run function monolith:animation/easing/in_out_cubic
+execute if score @s ml_a_easing matches 8 run function monolith:animation/easing/in_back
+execute if score @s ml_a_easing matches 9 run function monolith:animation/easing/in_out_back
+execute if score @s ml_a_easing matches 10 run function monolith:animation/easing/out_bounce
+execute if score @s ml_a_easing matches 11 run function monolith:animation/easing/in_bounce
+execute if score @s ml_a_easing matches 12 run function monolith:animation/easing/in_out_bounce

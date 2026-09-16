@@ -1,0 +1,1 @@
+function monolith:animation/easing/out_bounce_core

@@ -12,3 +12,6 @@ scoreboard players set #scale ml_a_tmp0 10000
 scoreboard players set #two ml_a_tmp0 2
 scoreboard players set #back_c1 ml_a_tmp0 17016
 scoreboard players set #back_c3 ml_a_tmp0 27016
+scoreboard players set #back_c2 ml_a_tmp0 25949
+scoreboard players set #back_c2p ml_a_tmp0 35949
+scoreboard players set #bounce_n1 ml_a_tmp0 75625
