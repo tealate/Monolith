@@ -5,3 +5,5 @@ execute if score @s ml_a_property matches 3 run function monolith:animation/adap
 execute if score @s ml_a_property matches 4 run function monolith:animation/adapter/scale_y
 execute if score @s ml_a_property matches 5 run function monolith:animation/adapter/scale_z
 execute if score @s ml_a_property matches 6 run function monolith:animation/adapter/scale_xyz
+execute if score @s ml_a_property matches 7 run function monolith:animation/adapter/rotation_y
+execute if score @s ml_a_property matches 8 run function monolith:animation/adapter/rotation_x

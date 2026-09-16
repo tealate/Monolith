@@ -12,6 +12,7 @@ Minecraft Java Edition 26.1向けのデータパックです。リソースパ�
 /function monolith:animation/debug/translation
 /function monolith:animation/debug/scale
 /function monolith:animation/debug/all
+/function monolith:animation/debug/rotation
 /function monolith:animation/debug/reset
 ```
 
@@ -28,3 +29,5 @@ Minecraft Java Edition 26.1向けのデータパックです。リソースパ�
       in_cubic        out_cubic       in_out_quad
 手前: in_quad         out_quad        linear
 ```
+
+`rotation`は横長のDisplay EntityをY軸方向へ0度から180度まで回転させ、`linear`、`in_out_cubic`、`out_back`を比較します。回転値はミリ度で、`90000`が90度です。Propertyには`rotation_x`と`rotation_y`を指定できます。
