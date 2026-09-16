@@ -11,9 +11,20 @@ Minecraft Java Edition 26.1向けのデータパックです。リソースパ�
 ```mcfunction
 /function monolith:animation/debug/translation
 /function monolith:animation/debug/scale
+/function monolith:animation/debug/all
 /function monolith:animation/debug/reset
 ```
 
 `translation`は5個のブロックを同じ距離だけ上昇させ、`scale`は5個のブロックを同じ倍率まで拡大します。左から`linear`、`in_quad`、`out_quad`、`in_out_quad`、`out_back`です。
 
 利用可能なEasingは`linear`、`in_quad`、`out_quad`、`in_out_quad`、`in_cubic`、`out_cubic`、`in_out_cubic`、`in_back`、`out_back`、`in_out_back`、`out_bounce`、`in_bounce`、`in_out_bounce`です。
+
+`all`は全13種類を同時に上昇させます。プレイヤーの視線方向を基準に、次の配置です。
+
+```text
+奥:   in_out_bounce
+      out_bounce      in_bounce       in_out_back
+      in_back         out_back        in_out_cubic
+      in_cubic        out_cubic       in_out_quad
+手前: in_quad         out_quad        linear
+```
