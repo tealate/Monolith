@@ -1,0 +1,7 @@
+execute if score @s ml_a_property matches 0 run function monolith:animation/adapter/translation_x
+execute if score @s ml_a_property matches 1 run function monolith:animation/adapter/translation_y
+execute if score @s ml_a_property matches 2 run function monolith:animation/adapter/translation_z
+execute if score @s ml_a_property matches 3 run function monolith:animation/adapter/scale_x
+execute if score @s ml_a_property matches 4 run function monolith:animation/adapter/scale_y
+execute if score @s ml_a_property matches 5 run function monolith:animation/adapter/scale_z
+execute if score @s ml_a_property matches 6 run function monolith:animation/adapter/scale_xyz
