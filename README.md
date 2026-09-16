@@ -1,6 +1,6 @@
 # Monolith
 
-Minecraft Java Edition 1.26.1 向けのリソースパックです。
+Minecraft Java Edition 26.1 向けのリソースパックです。
 
 ## 構成
 
@@ -12,7 +12,7 @@ Minecraft Java Edition 1.26.1 向けのリソースパックです。
 - `assets/monolith/textures/entity/`: Entity・Display用テクスチャ
 - `assets/monolith/textures/item/`: アイテム用テクスチャ
 - `assets/monolith/sounds/`: 独自サウンド
-- `vanilla_reference/`: Minecraft 1.26.1の参照用ファイル（成果物には含めない）
+- `vanilla_reference/`: Minecraft 26.1の参照用ファイル（成果物には含めない）
 
 実装仕様は [Notionの企画ページ](https://app.notion.com/p/3dd1fd1a6151819597c5c72cd34b8e22) を参照してください。
 

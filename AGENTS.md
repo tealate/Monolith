@@ -2,7 +2,7 @@
 
 ## Project
 
-このリポジトリは Minecraft Java Edition 1.26.1 用リソースパック **Monolith** の開発環境です。
+このリポジトリは Minecraft Java Edition 26.1 用リソースパック **Monolith** の開発環境です。
 
 仕様・設計・決定事項については、以下の Notion を参照してください。
 
@@ -17,7 +17,7 @@ Notion:
 
 対象バージョン:
 
-`Minecraft Java Edition 1.26.1`
+`Minecraft Java Edition 26.1`
 
 コマンド、JSON、リソースパック形式などは、このバージョンで利用可能な仕様に合わせて実装してください。
 
@@ -88,7 +88,7 @@ monolith:entity/example
 
 ## Vanilla Reference
 
-`vanilla_reference/` には、Minecraft 1.26.1 のバニラリソースを参照用として配置しています。
+`vanilla_reference/` には、Minecraft 26.1 のバニラリソースを参照用として配置しています。
 
 主な構成:
 
@@ -235,7 +235,7 @@ Codex 自身が Minecraft 上で確認していない場合は、「ゲーム内
 * JSON の構文が壊れていないか
 * resource location が正しいか
 * namespace が意図せず `minecraft` などになっていないか
-* ファイルパスが Minecraft 1.26.1 の形式に合っているか
+* ファイルパスが Minecraft 26.1 の形式に合っているか
 * 既存ファイルへの参照を壊していないか
 * 不要な入れ子のリソースパックを作っていないか
 

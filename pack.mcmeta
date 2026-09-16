@@ -1,6 +1,8 @@
 {
   "pack": {
     "pack_format": 84,
-    "description": "Monolith resources for Minecraft Java Edition 1.26.1"
+    "min_format": 84,
+    "max_format": 84,
+    "description": "Monolith resources for Minecraft Java Edition 26.1"
   }
 }
