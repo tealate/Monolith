@@ -154,6 +154,22 @@ start(rotating,'rotation_y',0,90000,20);assert.equal(rotating.score('@s','ml_r_p
 rotating.fn('animation/update');rotating.fn('animation/parent/unbind');
 const body=clone(rotating.nbt.Rotation);rotating.fn('animation/update');assert.deepEqual(rotating.nbt.Rotation,body);
 console.log('PASS legacy rotation stays local across parent detach.');
+// Run the sample's actual API calls through both stages, checking continuity and cleanup timing.
+for(let i=0;i<5;i++){
+  const sample=create();sample.set('#selected','ml_parent_id',1);
+  const setup=fs.readFileSync(path.join(root,`animation/debug/sentinel_part_${i}.mcfunction`),'utf8');
+  for(const line of setup.split(/\r?\n/))if(line.startsWith('function '))sample.cmd(line);
+  sample.set('@s','ml_parent_seen',1);
+  for(let tick=0;tick<80;tick++)sample.fn('animation/update');
+  const endpoint=clone(sample.nbt.transformation);
+  sample.fn(`animation/debug/sentinel_return_${i}`);
+  assert.deepEqual(sample.nbt.transformation,endpoint,'Sample stage jump '+i);
+  for(let tick=0;tick<40;tick++)sample.fn('animation/update');
+  assert.deepEqual(sample.nbt.transformation.translation,[0,0,0]);
+  assert.deepEqual(sample.nbt.transformation.scale,[0,0,0]);
+  assert.equal(sample.tags.has('monolith.animating'),false);
+}
+console.log('PASS sentinel sample: five parts, continuous stage transition, all tracks finish at tick 120.');
 // Static references, JSON and macro files. Engine command syntax is checked in Minecraft separately.
 let count=0;
 function walk(dir){for(const ent of fs.readdirSync(dir,{withFileTypes:true})){const f=path.join(dir,ent.name);if(ent.isDirectory())walk(f);else if(f.endsWith('.mcfunction')){count++;const s=fs.readFileSync(f,'utf8');for(const m of s.matchAll(/(?:^| run |return run )function monolith:([a-z0-9_./-]+)(?=\s|$)/gm))assert.ok(fs.existsSync(path.join(root,m[1]+'.mcfunction')),f+' -> '+m[1]);}}}

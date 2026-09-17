@@ -79,5 +79,59 @@ put('remove_boss_parent',[
   'kill @e[type=minecraft:marker,tag=monolith.debug,tag=monolith.parent]',
   'tellraw @s "BossRoot removed: its children should freeze. reset removes the children."'
 ]);
+// A short authored sequence: all three tracks play together under a moving root.
+const sentinelParts = [
+  ['sea_lantern',0,700,0,1300],
+  ['amethyst_block',2400,0,0,700],
+  ['gold_block',0,0,2400,700],
+  ['amethyst_block',-2400,0,0,700],
+  ['gold_block',0,0,-2400,700]
+];
+put('sentinel',[
+  '# Restart only this sample; other debug fixtures are left alone.',
+  'kill @e[tag=monolith.sentinel]',
+  'execute at @s rotated ~ 0 positioned ^0 ^2.5 ^8 summon minecraft:marker run function monolith:animation/debug/sentinel_setup'
+]);
+put('sentinel_setup',[
+  'tag @s add monolith.debug','tag @s add monolith.sentinel','tag @s add monolith.sentinel.root',
+  'scoreboard players set @s ml_demo_time 0',
+  'function monolith:animation/parent/select',
+  ...sentinelParts.map((_,i)=>`execute summon minecraft:block_display run function monolith:animation/debug/sentinel_part_${i}`),
+  'playsound minecraft:block.amethyst_block.chime master @a[distance=..24] ~ ~ ~ 0.8 0.7',
+  'particle minecraft:end_rod ~ ~ ~ 0.15 0.15 0.15 0.02 20'
+]);
+sentinelParts.forEach(([block,x,y,z,scale],i)=>{
+  const sign=i%2?-1:1;
+  put(`sentinel_part_${i}`,[
+    base(block),'tag @s add monolith.sentinel','tag @s add monolith.sentinel.child',`tag @s add monolith.sentinel.part${i}`,
+    'scoreboard players set @s ml_demo_time 0',
+    'function monolith:animation/parent/bind {mode:"full_rotation",anchor:"feet"}',
+    `function monolith:animation/path/arc {space:"local",sx:0,sy:0,sz:0,ex:${x},ey:${y},ez:${z},height:${i?1700:700},duration:80,easing:"out_quart"}`,
+    t(i?'local_rotation_z':'local_rotation_y',0,sign*720000,80,'linear'),
+    t('scale_xyz',0,scale,36,'out_elastic')
+  ]);
+  put(`sentinel_return_${i}`,[
+    `function monolith:animation/path/bezier {space:"local",sx:${x},sy:${y},sz:${z},cx:${-z},cy:${y+2600},cz:${x},ex:0,ey:0,ez:0,duration:40,easing:"in_cubic"}`,
+    t(i?'local_rotation_z':'local_rotation_y',sign*720000,sign*900000,40,'in_quart'),
+    t('scale_xyz',scale,0,40,'in_back')
+  ]);
+});
+put('sentinel_root_tick',[
+  'scoreboard players add @s ml_demo_time 1',
+  '# Move the parent before following children; roll/rotation/scale of parts remain independent.',
+  'execute if score @s ml_demo_time matches ..80 run tp @s ~ ~0.008 ~ ~2 ~',
+  'execute if score @s ml_demo_time matches 81..120 run tp @s ~ ~-0.016 ~ ~4 ~',
+  'execute if score @s ml_demo_time matches 80 run playsound minecraft:block.amethyst_block.chime master @a[distance=..24] ~ ~ ~ 0.8 1.6',
+  'execute if score @s ml_demo_time matches 120 run particle minecraft:end_rod ~ ~ ~ 0.25 0.25 0.25 0.1 50',
+  'execute if score @s ml_demo_time matches 120 run playsound minecraft:block.beacon.deactivate master @a[distance=..24] ~ ~ ~ 0.5 1.7',
+  '# Children reach To and clean up at tick 120; root survives until the following tick.',
+  'execute if score @s ml_demo_time matches 121.. run kill @s'
+]);
+put('sentinel_child_tick',[
+  '# Runs after Tween update, so stage transitions start from the completed previous endpoint.',
+  'scoreboard players add @s ml_demo_time 1',
+  ...sentinelParts.map((_,i)=>`execute if score @s ml_demo_time matches 80 if entity @s[tag=monolith.sentinel.part${i}] run function monolith:animation/debug/sentinel_return_${i}`),
+  'execute if score @s ml_demo_time matches 120.. run kill @s'
+]);
 for (const [name,text] of files) { fs.mkdirSync(root,{recursive:true});fs.writeFileSync(path.join(root,name+'.mcfunction'),text); }
 console.log(`Generated ${files.size} debug fixtures.`);

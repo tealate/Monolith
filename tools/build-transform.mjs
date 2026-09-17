@@ -240,10 +240,12 @@ put('animation/track/migrate',[
 ]);
 put('animation/tick',[
   // Run root motion first to avoid a one-tick parent lag.
+  'execute as @e[tag=monolith.sentinel.root] at @s run function monolith:animation/debug/sentinel_root_tick',
   'execute as @e[tag=monolith.debug.boss] at @s run function monolith:animation/debug/boss_tick',
   'execute as @e[tag=monolith.animating,tag=!monolith.child] run function monolith:animation/update',
   call('parent/tick'),
   'execute as @e[tag=monolith.animating,tag=monolith.child] run function monolith:animation/update',
+  'execute as @e[tag=monolith.sentinel.child] at @s run function monolith:animation/debug/sentinel_child_tick',
   'execute as @e[tag=monolith.showcase] at @s run function monolith:animation/debug/showcase_tick'
 ]);
 for (const [name, text] of files) {

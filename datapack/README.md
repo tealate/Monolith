@@ -1,5 +1,14 @@
 # Monolith Datapack
 
+## 浮遊コアの展開・収束サンプル
+
+`/reload` → `/function monolith:animation/debug/sentinel`
+
+前方8ブロック・高さ2.5ブロックに光るコアと4つの破片が出現します。
+約6秒で、弾むように拡大 → 弧を描いて展開 → 親ごと旋回しながら個別回転 → Bezier曲線で収束 → 縮小消滅。
+音・Particle付き。終了時には親Markerと子Displayを自動削除します。
+再実行でこのサンプルだけ作り直せます。途中で片付ける場合は `/function monolith:animation/debug/reset`（他のdebugサンプルも削除）。
+
 Translation / Rotation / Scaleの同時Tween、3種類のPath、Player/BossRootの親追従を追加しました。
 API・座標空間・制約・確認方法は [TRANSFORM.md](TRANSFORM.md) を参照してください。
 最初の確認：`/reload` → `/function monolith:animation/debug/transform`。
