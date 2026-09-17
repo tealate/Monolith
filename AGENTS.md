@@ -45,6 +45,12 @@ Monolith/
 
 `pack.mcmeta` と `assets/` はリポジトリ直下に配置します。
 
+ユーザー指定により、データパックは専用の `datapack/` 以下へ配置します。
+`MonolithTest/datapacks/Monolith` のJunctionからこのフォルダを参照します。
+データパック実装のAPI・制約は `datapack/TRANSFORM.md` を参照してください。
+`tools/build-transform.mjs` と `tools/build-transform-debug.mjs` が生成するFunctionは生成元を編集し、再生成します。
+変更後は `node tools/test-transform.mjs` で数値・状態の回帰検証を実行してください。
+
 別途リソースパック用のフォルダを作成しないでください。
 
 以下のような入れ子構造は作成しないでください。

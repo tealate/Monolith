@@ -1,5 +1,9 @@
 # Monolith Datapack
 
+Translation / Rotation / Scaleの同時Tween、3種類のPath、Player/BossRootの親追従を追加しました。
+API・座標空間・制約・確認方法は [TRANSFORM.md](TRANSFORM.md) を参照してください。
+最初の確認：`/reload` → `/function monolith:animation/debug/transform`。
+
 ## クリスタル登場デモ
 
 `/reload`後に`/function monolith:animation/debug/showcase`を実行。

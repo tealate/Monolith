@@ -7,3 +7,7 @@ execute if score @s ml_a_property matches 5 run function monolith:animation/adap
 execute if score @s ml_a_property matches 6 run function monolith:animation/adapter/scale_xyz
 execute if score @s ml_a_property matches 7 run function monolith:animation/adapter/rotation_y
 execute if score @s ml_a_property matches 8 run function monolith:animation/adapter/rotation_x
+execute if score @s ml_a_property matches 9 run function monolith:animation/path/evaluate
+execute if score @s ml_a_property matches 10 run function monolith:animation/adapter/local_rotation_x
+execute if score @s ml_a_property matches 11 run function monolith:animation/adapter/local_rotation_y
+execute if score @s ml_a_property matches 12 run function monolith:animation/adapter/local_rotation_z

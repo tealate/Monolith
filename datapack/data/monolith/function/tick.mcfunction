@@ -1,2 +1,4 @@
-execute as @e[tag=monolith.animating] run function monolith:animation/update
-execute as @e[tag=monolith.showcase] at @s run function monolith:animation/debug/showcase_tick
+# Vanilla dimensions are explicitly visited so Nether/End parents and tracks also update.
+execute in minecraft:overworld run function monolith:animation/tick
+execute in minecraft:the_nether run function monolith:animation/tick
+execute in minecraft:the_end run function monolith:animation/tick
