@@ -1,3 +1,6 @@
 {
-  "values": ["monolith:tick"]
+  "values": [
+    "monolith:tick",
+    "monolith_anim:tick"
+  ]
 }

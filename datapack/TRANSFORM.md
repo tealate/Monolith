@@ -1,5 +1,7 @@
 # Transform Tracks / Path / Virtual Parent
 
+この文書は互換維持する旧 `monolith:animation/*` APIです。XYZ独立Layer・Transform階層・Sequencerを使う新規実装は [ANIMATION.md](ANIMATION.md) の `monolith_anim:*` を参照してください。旧APIは登録済みの新Nodeへの書き込みを拒否します。
+
 対象はMinecraft Java Edition **26.1**。既存の `animation/start` を維持し、Translation / Rotation / Scaleの3Trackを独立させています。
 仕様参照：[2026-09-17拡張設計を含むNotion仕様書](https://app.notion.com/p/3dd1fd1a615181308b58f0fd8362912a)。
 

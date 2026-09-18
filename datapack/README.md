@@ -1,5 +1,13 @@
 # Monolith Datapack
 
+新基盤は [ANIMATION.md](ANIMATION.md)、Sequenceの詳細は [SEQUENCER.md](SEQUENCER.md) を参照してください。
+4 Layer × TRS XYZ、Euler合成、最大8段のTransform階層、独立Sequence Instanceと割り込みを `monolith_anim:*` Public APIで扱えます。
+
+最初の確認: `/reload` → `/function monolith:animation/demo/hierarchy`。
+再生中に `/function monolith:animation/demo/hit` でPause割り込み、`hit_parallel` でShakeの重ねがけ、`replace` で置換を確認できます。
+
+以下は互換維持する旧APIの説明です。
+
 ## 浮遊コアの展開・収束サンプル
 
 `/reload` → `/function monolith:animation/debug/sentinel`

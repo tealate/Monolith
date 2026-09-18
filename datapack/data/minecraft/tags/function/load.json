@@ -1,3 +1,6 @@
 {
-  "values": ["monolith:load"]
+  "values": [
+    "monolith:load",
+    "monolith_anim:load"
+  ]
 }

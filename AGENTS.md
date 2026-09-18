@@ -2,85 +2,79 @@
 
 ## Project
 
-このリポジトリは Minecraft Java Edition 26.1 用リソースパック **Monolith** の開発環境です。
+This repository is the development environment for **Monolith**, a Minecraft Java Edition **26.1** resource pack + data pack.
 
-仕様・設計・決定事項については、以下の Notion を参照してください。
+Specification and design reference:
 
-Notion:
 `https://app.notion.com/p/3dd1fd1a6151819597c5c72cd34b8e22`
 
-実装方法や仕様が不明な場合は、自己判断で大きな仕様を追加・変更する前に、まず既存ファイルと Notion の内容を確認してください。
+Use the repository as the primary source of implementation context.
+
+Consult Notion only when:
+
+* the requested behavior is unclear,
+* an important design decision is missing from the repository,
+* or the task explicitly requires it.
+
+Do not read Notion preemptively for routine implementation.
 
 ---
 
-## Minecraft Version
+## Version
 
-対象バージョン:
+Target:
 
 `Minecraft Java Edition 26.1`
 
-コマンド、JSON、リソースパック形式などは、このバージョンで利用可能な仕様に合わせて実装してください。
+Use command, JSON, resource-pack, and data-pack formats valid for this version.
 
-古いバージョンや別バージョンの形式をそのまま使用しないでください。
+Do not copy older-version formats without verifying compatibility.
 
 ---
 
-## Resource Pack Root
+## Repository Layout
 
-この Git リポジトリのルートは、そのまま Minecraft が使用する実際のリソースパックルートです。
-
-基本構成:
+The repository root is the actual resource-pack root used by Minecraft.
 
 ```text
 Monolith/
 ├─ pack.mcmeta
 ├─ assets/
 │  └─ monolith/
+├─ datapack/
 ├─ vanilla_reference/
 │  └─ assets/
 │     └─ minecraft/
+├─ tools/
 ├─ AGENTS.md
 └─ .git/
 ```
 
-`pack.mcmeta` と `assets/` はリポジトリ直下に配置します。
+Do not create another nested resource pack.
 
-ユーザー指定により、データパックは専用の `datapack/` 以下へ配置します。
-`MonolithTest/datapacks/Monolith` のJunctionからこのフォルダを参照します。
-データパック実装のAPI・制約は `datapack/TRANSFORM.md` を参照してください。
-`tools/build-transform.mjs` と `tools/build-transform-debug.mjs` が生成するFunctionは生成元を編集し、再生成します。
-変更後は `node tools/test-transform.mjs` で数値・状態の回帰検証を実行してください。
+The data pack lives under:
 
-別途リソースパック用のフォルダを作成しないでください。
+`datapack/`
 
-以下のような入れ子構造は作成しないでください。
+Minecraft accesses it through a Junction from:
 
-```text
-Monolith/
-└─ another_resource_pack/
-   ├─ pack.mcmeta
-   └─ assets/
-```
+`MonolithTest/datapacks/Monolith`
 
-変更内容はこのリポジトリ内の実ファイルへ直接反映してください。
-
-ビルド用・出力用のコピーは、明示的に要求された場合を除いて作成しないでください。
+Do not create build/output copies unless explicitly requested.
 
 ---
 
 ## Namespace
 
-このプロジェクトの namespace は以下を使用します。
+Primary namespace:
 
 `monolith`
 
-新規リソースは原則として以下の namespace 配下へ作成してください。
+Resource-pack content normally belongs under:
 
-```text
-assets/monolith/
-```
+`assets/monolith/`
 
-resource location の例:
+Examples:
 
 ```text
 monolith:item/example
@@ -88,167 +82,315 @@ monolith:block/example
 monolith:entity/example
 ```
 
-既存の `minecraft` namespace を直接上書きする必要がある場合は、その必要性を確認してから変更してください。
+Avoid modifying the `minecraft` namespace unless required.
+
+---
+
+## Data Pack Architecture
+
+Transform API and constraints:
+
+`datapack/TRANSFORM.md`
+
+Animation and Sequencer APIs:
+
+```text
+datapack/ANIMATION.md
+datapack/SEQUENCER.md
+```
+
+Generic animation runtime:
+
+`datapack/data/monolith_anim/`
+
+`monolith_anim` must not depend on Dungeon content or `monolith:animation/demo/*`.
+
+The legacy and new animation systems must not control the same entity Transform at the same time.
+
+### Generated Transform Functions
+
+Generators:
+
+```text
+tools/build-transform.mjs
+tools/build-transform-debug.mjs
+```
+
+When generated Functions need changes, edit their generator/source rather than manually maintaining generated output.
+
+Relevant regression test:
+
+```text
+node tools/test-transform.mjs
+```
+
+### Generated Animation Functions
+
+Generators:
+
+```text
+tools/build-animation-layers.mjs
+tools/build-animation-nodes.mjs
+tools/build-animation-sequence.mjs
+tools/build-animation-debug.mjs
+```
+
+Full regeneration:
+
+```text
+node tools/build-animation.mjs
+```
+
+Relevant regression test:
+
+```text
+node tools/test-animation.mjs
+```
 
 ---
 
 ## Vanilla Reference
 
-`vanilla_reference/` には、Minecraft 26.1 のバニラリソースを参照用として配置しています。
+`vanilla_reference/` contains Minecraft 26.1 vanilla assets for reference only.
 
-主な構成:
+Use it only when vanilla structure or behavior must actually be checked.
 
-```text
-vanilla_reference/
-└─ assets/
-   └─ minecraft/
-```
+Prefer targeted reads of specific files.
 
-このディレクトリは実装時の参考資料です。
+Do not scan the directory broadly.
 
-バニラの以下のような内容を確認するために使用してください。
+Do not depend on `vanilla_reference/` at runtime.
 
-* JSON の構造
-* モデル定義
-* テクスチャ
-* blockstate
-* item 定義
-* shader
-* その他のバニラリソース
-
-必要に応じて、バニラのファイルを参考・流用して実装して構いません。
-
-ただし、`vanilla_reference/` 自体はリソースパックの成果物ではありません。
-
-Minecraft から参照されることを前提にした実装をしないでください。
-
-このディレクトリは最終的に削除する可能性があります。
-
-バニラファイルを実際の実装で必要とする場合は、適切な場所へコピー・変更した上で使用してください。
+If a vanilla asset is required by Monolith, copy or recreate the required file in the appropriate real resource-pack location.
 
 ---
 
 ## Editing Rules
 
-既存の構成や実装がある場合は、まずそれを確認してから編集してください。
+Prefer minimal, task-focused changes.
 
-以下を基本方針とします。
+* Follow existing naming and architecture.
+* Reuse existing implementations where practical.
+* Do not add unnecessary directory layers or copies.
+* Do not move, rename, or delete unrelated files.
+* Avoid unrelated cleanup and speculative refactoring.
+* Do not rewrite working code only for style.
+* Inspect one or two representative implementations instead of every similar file.
+* Make large structural changes only when required by the task.
 
-* 既存の命名規則をできるだけ維持する
-* 不要なフォルダ階層を追加しない
-* 不要なファイルコピーを作らない
-* 必要のない既存ファイルの移動・改名・削除をしない
-* 小さな変更で済む場合は大規模な書き換えを避ける
-* 同様の実装が既に存在する場合は可能な限り再利用する
-* `vanilla_reference/` は参照用として扱う
-
-構造そのものを大きく変更する必要がある場合は、変更理由を作業結果に記載してください。
-
----
-
-## Git Rules
-
-このリポジトリでは、Codex は Git を作業管理のために自由に使用して構いません。
-
-必要に応じて以下を行って構いません。
-
-* 新しいブランチの作成
-* ブランチの切り替え
-* コミット
-* push
-* stash
-* stash の復元
-* 一時的な作業ブランチの作成
-* 既存のローカル差分を退避するためのコミット
-* 既存のローカル差分を別ブランチへ保存
-
-作業開始時に未コミットの差分が存在する場合、それらはユーザーによる変更である可能性があります。
-
-ただし、作業を安全に進めるためであれば、それらをそのまま保持することに固執する必要はありません。
-
-必要に応じて以下のような方法で安全に保存してください。
-
-```text
-stash
-```
-
-または、
-
-```text
-一時ブランチを作成
-↓
-既存差分をコミット
-↓
-作業ブランチへ戻る
-```
-
-既存差分を保護することを優先し、内容を失わないようにしてください。
-
-ユーザーの既存変更と今回の作業内容を分離できる場合は、分離して管理することを推奨します。
-
-Git 操作について毎回ユーザーへ確認を求める必要はありません。
-
-ただし、以下のような破壊的操作は避けてください。
-
-* 未保存変更を失う `git reset --hard`
-* 意図しない変更を消す `git checkout -- <file>`
-* 未追跡ファイルを無条件に削除する `git clean -fd`
-* 既存の共有履歴を書き換える force push
-* ユーザーの変更を確認せず破棄する操作
-
-どうしても履歴の書き換えや変更破棄が必要な場合は、その理由を明確にしてください。
-
-作業完了時には、実施した Git 操作も簡潔に報告してください。
-
-例:
-
-* 作成したブランチ
-* 作成したコミット
-* push の有無
-* stash の使用有無
-* 既存差分をどこへ退避したか
+If a major structural change is necessary, explain it briefly in the final report.
 
 ---
 
-## Reload / Testing
+## Context / Token Efficiency
 
-このフォルダは Minecraft が実際に参照しているリソースパックです。
+Minimize context usage unless additional investigation is necessary for correctness.
 
-リソースパックの変更は Minecraft 上で以下を使用して再読み込みできます。
+### File reading
+
+* Read only files relevant to the current task.
+* Do not scan the entire repository without a concrete reason.
+* Prefer exact filenames and directory-scoped searches.
+* Do not repeatedly read unchanged files.
+* Do not inspect unrelated systems for general understanding.
+* Do not dump large files, diffs, or search results unless needed for diagnosis.
+
+### Existing context
+
+If the current session already established how a system works, reuse that knowledge unless the repository now contradicts it.
+
+Do not repeatedly rediscover the same architecture.
+
+For interrupted Codex work:
+
+1. Treat existing changes as valid work in progress.
+2. Check `git status`.
+3. Inspect only the relevant portions of `git diff`.
+4. Continue from the existing implementation.
+
+Do not restart the investigation or implementation from scratch unless the existing work is unusable.
+
+### Planning
+
+For straightforward changes, implement directly.
+
+Do not produce a long implementation plan unless:
+
+* multiple systems are affected,
+* there is genuine architectural ambiguity,
+* or destructive migration is involved.
+
+### Search
+
+Use the narrowest search that can answer the question.
+
+Prefer:
+
+```text
+exact identifier
+exact filename
+specific namespace
+specific directory
+specific function/tag
+```
+
+Avoid repeated differently-worded searches for the same information when the first search was sufficient.
+
+---
+
+## Validation Policy
+
+Validation should be proportional to the change.
+
+**Do not validate after every small edit.**
+
+Preferred workflow:
+
+```text
+inspect
+→ make a coherent batch of changes
+→ regenerate if required
+→ run targeted validation once
+→ fix actual failures
+→ re-run only affected validation
+```
+
+Do not repeatedly run a successful check.
+
+### Transform changes
+
+If the Transform generator/runtime was modified:
+
+1. Regenerate the required output once after the implementation batch.
+2. Run:
+
+```text
+node tools/test-transform.mjs
+```
+
+once near completion.
+
+Do not run it for unrelated resource-pack or data-pack changes.
+
+### Animation / Sequencer changes
+
+If the animation generator/runtime was modified:
+
+1. Run regeneration once near completion:
+
+```text
+node tools/build-animation.mjs
+```
+
+2. Run:
+
+```text
+node tools/test-animation.mjs
+```
+
+once near completion.
+
+Do not run the animation regression suite for unrelated changes.
+
+If both Transform and Animation systems were changed, run both relevant suites.
+
+### Static validation
+
+For ordinary resource-pack/data-pack changes, check only what is relevant:
+
+* changed JSON parses,
+* namespace/path is correct,
+* referenced Functions/resources exist where reasonably checkable,
+* obvious command syntax is valid,
+* generated output is consistent with its source.
+
+Do not perform repository-wide validation unless the change is repository-wide.
+
+### Game runtime
+
+Do not launch Minecraft or a Minecraft server solely for validation unless explicitly requested.
+
+Resource-pack reload:
 
 ```text
 F3 + T
 ```
 
-データパック側の変更を再読み込みする場合は、
+Data-pack reload:
 
 ```text
 /reload
 ```
 
-を使用します。
+These are different operations.
 
-`F3 + T` と `/reload` は用途が異なるため混同しないでください。
+Do not claim that behavior was verified in-game unless it actually was.
 
-Codex 自身が Minecraft 上で確認していない場合は、「ゲーム内で動作確認済み」とは報告しないでください。
+Visual behavior, timing, entity movement, rendering, interaction, and other runtime behavior may be left for user-side verification when static validation is insufficient.
+
+Report the specific unverified item instead of performing excessive indirect validation.
 
 ---
 
-## Before Finishing
+## Failure Handling
 
-作業完了前に最低限以下を確認してください。
+When validation fails:
 
-* JSON の構文が壊れていないか
-* resource location が正しいか
-* namespace が意図せず `minecraft` などになっていないか
-* ファイルパスが Minecraft 26.1 の形式に合っているか
-* 既存ファイルへの参照を壊していないか
-* 不要な入れ子のリソースパックを作っていないか
+1. Investigate the actual failure.
+2. Fix the relevant issue.
+3. Re-run only the affected validation.
 
-作業完了時には簡潔に以下を報告してください。
+Do not turn a local failure into a full repository audit.
 
-* 変更したファイル
-* 実装した内容
-* Minecraft 上での確認方法
-* 実施した Git 操作
-* 未確認事項や注意点がある場合はその内容
+If a required tool/runtime is unavailable, do not repeatedly retry it. Continue with other work and report the limitation.
+
+---
+
+## Git Rules
+
+Codex may freely use Git for safe work management, including:
+
+* branches,
+* commits,
+* push,
+* stash,
+* temporary branches,
+* commits used to preserve existing work.
+
+Existing uncommitted changes may belong to the user or a previous Codex session.
+
+Preserve them.
+
+It is acceptable to stash or commit existing changes when necessary to work safely.
+
+No confirmation is required for normal safe Git operations.
+
+Avoid destructive operations that can lose work, including:
+
+```text
+git reset --hard
+git clean -fd
+```
+
+Do not discard unrelated changes or force-push shared history.
+
+Do not repeatedly run `git status` or large repository-wide diffs without a reason.
+
+Prefer targeted diffs for files relevant to the current task.
+
+---
+
+## Final Report
+
+Keep the final report concise.
+
+Include only:
+
+* what was implemented,
+* important design changes if any,
+* validation actually performed,
+* required user-side Minecraft verification,
+* Git operations performed,
+* remaining issues or unverified items.
+
+Do not narrate routine file reads, searches, or commands.

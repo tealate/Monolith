@@ -44,7 +44,7 @@ put('animation/update',[
 put('animation/cancel', [...tracks.map(c=>set(`ml_${c}_active`,0)),set('ml_a_elapsed',0),set('ml_a_duration',0),'tag @s remove monolith.animating']);
 put('animation/finish', [...tracks.map(c=>`execute if score @s ml_${c}_active matches 1 run function monolith:animation/track/${c}/finish`),call('track/refresh')]);
 for (const [name,c] of [['translation','t'],['rotation','r'],['scale','s']]) put(`animation/cancel_${name}`,[set(`ml_${c}_active`,0),call('track/refresh')]);
-const checkDisplay = 'execute unless entity @s[type=minecraft:block_display] unless entity @s[type=minecraft:item_display] unless entity @s[type=minecraft:text_display] run return 0';
+const checkDisplay = 'execute if entity @s[tag=monolith_anim.node] run return 0\nexecute unless entity @s[type=minecraft:block_display] unless entity @s[type=minecraft:item_display] unless entity @s[type=minecraft:text_display] run return 0';
 put('animation/start',[
   '# Backward-compatible scalar API; overwrite only the selected transform track.',
   checkDisplay,set('ml_a_property',-1),set('ml_a_easing',-1),
@@ -144,6 +144,7 @@ put('animation/path/arc_height',[
 // Parent identity is persistent and allocated once. The selected ID is only an immediate API hand-off.
 put('animation/parent/select',[
   'scoreboard players set #selected ml_parent_id 0',
+  'execute if entity @s[tag=monolith_anim.node] run return 0',
   'execute if entity @s[tag=monolith.child] run return 0',
   'execute unless score @s ml_parent_id matches 1.. run function monolith:animation/parent/allocate',
   'tag @s add monolith.parent',
